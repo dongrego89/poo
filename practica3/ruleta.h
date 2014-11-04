@@ -24,9 +24,7 @@ public:
 		return banca_;	
 	}
 	void setBanca(int valor){
-		if(valor>0){	
-			banca_=valor;
-		}
+		banca_=valor;
 	}
 	
 	int getBola(){
@@ -58,6 +56,15 @@ public:
 
 	void leeJugadores();
 
+	void giraRuleta();
+
+	void getPremios();	
+
+	string bajoalto(int valor);
+
+	string parimpar(int valor);
+
+	string color(int valor);
 };
 
 #endif

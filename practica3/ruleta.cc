@@ -1,6 +1,8 @@
 #include "ruleta.h"
 #include<fstream>
 #include<string>
+#include<time>
+#include<cstdlib>
 #include<list>
 
 using namespace std;
@@ -80,6 +82,119 @@ void Ruleta::void leeJugadores(){
 	}
 	archivo.close();
 }
+
+void Ruleta::giraRuleta(){
+	srand(time(NULL));
+	setBola(rand()%37);
+}
+
+void Ruleta::getPremios(){
+	
+	list<Jugador>::iterator i;
+	list<Apuesta>::iterator j;
+	Apuesta aux;
+
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){//Recorremos la lista de objetos jugador
+		
+		i->setApuestas();//Actualizamos la lista de apuestas a partir del archivo dni
+		
+		aux=i->getApuestas();//Sacamos la lista de apuestas de este objeto
+		
+		for(j=aux.begin();j!=aux.end();j++){//Recorremos la lista de apuestas
+
+			switch(aux.tipo){//Analizamos segun el tipo de apuesta generada
+				case 1://Numero de 0 a 36, se gana x35 de lo apostado
+					if( bola_ == atoi(j->valor.c_str()) ){//Si gana la apuesta
+						i->setDinero(i->getDinero()+j->cantidad*35);
+						banca_-=j->cantidad*35;
+					}
+					else{//Si pierde la apuesta
+						i->setDinero(i->getDinero()-j->cantidad);
+						banca_+=j->.cantidad;
+					}
+				break;
+				case 2://Rojo o Negro, se gana 1 a 1. Si sale 0 se pierde
+					if((j->valor.c_str())==color(bola_)){
+						i->setDinero(i->getDinero()+j->cantidad);
+						banca_-=j->cantidad;	
+					}
+					else{
+						i->setDinero(i->getDinero()-j->cantidad);
+						banca-+=j->cantidad;
+					}
+				break;
+
+				case 3://Par o impar, se gana 1 a 1. Si sale 0 se pierde
+					if((j->valor.c_str())==parimpar(bola_)){
+						i->setDinero(i->getDinero()+j->cantidad);
+						banca_-=j->cantidad;	
+					}
+					else{
+						i->setDinero(i->getDinero()-j->cantidad);
+						banca_+=j->cantidad;
+					}
+
+				break;
+
+				case 4://Alto(19-36) o bajo(1-18). Se gana 1 a 1. Si sale 0 se pierde
+					if((j->valor.c_str())==bajoalto(bola_)){
+						i->setDinero(i->getDinero()+j->cantidad);
+						banca_-=j->cantidad;	
+					}
+					else{
+						i->setDinero(i->getDinero()-j->cantidad);
+						banca_+=j->cantidad;
+					}
+
+				break;
+
+			
+			}
+		}
+		
+	}
+	
+}
+
+
+string Ruleta::bajoalto(int bola){
+	if((bola>=1) && (bola<=18)){
+		return "bajo";
+	}
+	else if((bola>=19) && (bola<=36)){
+		return "alto";
+	}
+	else{
+		return "cero";
+	}
+}
+
+string Ruleta::parimpar(int bola){
+	if(bola%2==0){
+		return "par";	
+	}
+	else if(bola%2!=0){
+		return "impar";	
+	}
+	else{
+		return "cero";
+	}
+
+}
+
+string Ruleta::color(int bola){
+	switch(bola){
+		case 1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36:
+			return "rojo";
+			break;
+		case 0:
+			return "cero";
+			break;
+		default:
+			return "negro";
+	}
+}
+
 }
 
 
