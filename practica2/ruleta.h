@@ -1,30 +1,34 @@
 #ifndef RULETA_H
 #define RULETA_H
 
-
-#include "../practica2/crupier.h"
-#include "../practica2/jugador.h"
+#include "crupier.h"
+#include "jugador.h"
 #include<list>
 
-using namspace std;
+using namespace std;
 
 class Ruleta{
 private:
 	int banca_;
 	int bola_;
 	list<Jugador> jugadores_;
-	Crupier crupier_;
+	Crupier crupier_;	
+
+	string bajoalto(int valor);
+
+	string parimpar(int valor);
+
+	string color(int valor);
 public:
-	Ruleta(Crupier crupier){
-		bola_=-1;
-		banca_=1000000;
-		crupier_=crupier;
-	}
+	Ruleta(Crupier c);
+
 	int getBanca(){
 		return banca_;	
 	}
 	void setBanca(int valor){
-		banca_=valor;
+		if(valor>0){
+			banca_=valor;
+		}
 	}
 	
 	int getBola(){
@@ -58,13 +62,7 @@ public:
 
 	void giraRuleta();
 
-	void getPremios();	
-
-	string bajoalto(int valor);
-
-	string parimpar(int valor);
-
-	string color(int valor);
+	void getPremios();
 };
 
 #endif
