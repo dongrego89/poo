@@ -1,4 +1,4 @@
-// jugador_unittest.cc: Juan A. Romero
+// dados_unittest.cc: Juan A. Romero
 // A sample program demonstrating using Google C++ testing framework.
 //
 // This sample shows how to write a more complex unit test for a class
@@ -16,8 +16,6 @@
 #include "gtest/gtest.h"
 
 using namespace std;
-using namespace ruleta;
-
 
 TEST(Ruleta, Constructor) {
   Crupier c("33XX","codigo1");
@@ -134,7 +132,6 @@ TEST(Ruleta, escribeLeeJugadores) {
   r.addJugador(j1);
   r.addJugador(j2);
   r.escribeJugadores();
-
   Ruleta r2(c);
   r2.leeJugadores();
   EXPECT_FALSE(r2.getJugadores().empty());
@@ -148,11 +145,9 @@ TEST(Ruleta, escribeLeeJugadores) {
 TEST(Ruleta, giraRuleta) {
   Crupier c("33XX","crupier1");
   Ruleta r(c);
-  for (int i=0;i<100;i++){
-    r.giraRuleta();
-    EXPECT_GT(r.getBola(), -1);
-    EXPECT_LT(r.getBola(), 37);
-  }
+  r.giraRuleta();
+  EXPECT_GT(r.getBola(), -1);
+  EXPECT_LT(r.getBola(), 37);
 }
 
 TEST(Ruleta, getPremios) {

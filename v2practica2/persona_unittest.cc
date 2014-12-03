@@ -12,6 +12,9 @@
 #include "persona.h"
 #include "gtest/gtest.h"
 
+using namespace std;
+using namespace ruleta;
+
 TEST(Persona, ConstructorParametrosDefecto) {
   Persona p("33XX");
   

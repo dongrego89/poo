@@ -15,6 +15,9 @@
 #include "jugador.h"
 #include "gtest/gtest.h"
 
+using namespace std;
+using namespace ruleta;
+
 
 TEST(Jugador, ConstructorParametrosDefecto) {
 Jugador j("33XX", "1");
