@@ -14,25 +14,27 @@ typedef struct{
 	int cantidad;	
 }Apuesta;
 
-class Jugador : public Persona{
-private:
-	int dinero_;
-	string codigo_;
-	list<Apuesta> apuestas_;
-public:
-	Jugador(string dni,string cod,string n="",string a="",string di="",string l="",string pr="",string p=""):Persona(dni,n,a,di,l,pr,p){
-		codigo_=cod;
-		dinero_=1000;
-	}
 
-	void setDinero(int d){dinero_=d;}	
-	int getDinero()const{return dinero_;}
+namespace ruleta{
+	class Jugador : public Persona{
+	private:
+		int dinero_;
+		string codigo_;
+		list<Apuesta> apuestas_;
+	public:
+		Jugador(string dni,string cod,string n="",string a="",string di="",string l="",string pr="",string p=""):Persona(dni,n,a,di,l,pr,p){
+			codigo_=cod;
+			dinero_=1000;
+		}
 
-	void setCodigo(string c){codigo_=c;}
-	string getCodigo()const{return codigo_;}
+		void setDinero(int d){dinero_=d;}	
+		int getDinero()const{return dinero_;}
 
-	list<Apuesta> getApuestas()const {return apuestas_;}
-	void setApuestas();
-};
+		void setCodigo(string c){codigo_=c;}
+		string getCodigo()const{return codigo_;}
 
+		list<Apuesta> getApuestas()const {return apuestas_;}
+		void setApuestas();
+	};
+}
 #endif

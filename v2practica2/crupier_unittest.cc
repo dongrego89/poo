@@ -12,6 +12,10 @@
 #include "crupier.h"
 #include "gtest/gtest.h"
 
+using namespace std;
+using namespace ruleta;
+
+
 TEST(Crupier, Constructor){//Construimos objeto y lo comprobamos con metodo 
 	Crupier c("33XX","A3BZ8");
 	EXPECT_EQ("A3BZ8",c.getCodigo());

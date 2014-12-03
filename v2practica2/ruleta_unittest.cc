@@ -16,6 +16,8 @@
 #include "gtest/gtest.h"
 
 using namespace std;
+using namespace ruleta;
+
 
 TEST(Ruleta, Constructor) {
   Crupier c("33XX","codigo1");
