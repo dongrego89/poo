@@ -218,3 +218,67 @@ TEST(Ruleta, getPremiosCero) {
   EXPECT_EQ(1000360, r.getBanca());
 }
 
+TEST(Ruleta, getEstado){
+ Crupier c("33XX","crupier1");
+  Jugador j1("44XX","jugador1");
+  Jugador j2("55XX","jugador2");
+  Jugador j3("77XX","jugador3");
+  Ruleta r(c);
+
+  int nl,sd,nj,eb;	
+
+  r.addJugador(j1);
+  r.addJugador(j2);
+
+  ofstream salida("44XX.txt");
+  salida << 1 << "," << "10" << "," << 10<< "\n";
+  salida << 2 << "," << "rojo" << "," << 20<< "\n";
+  salida << 3 << "," << "par" << "," << 30<< "\n";
+  salida << 4 << "," << "bajo" << "," << 40<< "\n";
+  salida.close();
+
+  salida.open("55XX.txt");
+  salida << 2 << "," << "rojo" << "," << 50<< "\n";
+  salida << 1 << "," << "15" << "," << 60<< "\n";
+  salida << 4 << "," << "alto" << "," << 70<< "\n";
+  salida << 3 << "," << "impar" << "," << 80<< "\n";
+  salida.close();
+
+  r.giraRuleta();
+
+  r.getPremios();
+
+  r.addJugador(j3);
+  r.deleteJugador(j1);
+  r.getEstadoRuleta(nj,sd,nl,eb);
+  cout << "\n\nEl estado de la banca es: "<< eb << "\nEl numero de lanzamientos es: " << nl << "\nEl dinero que hay encima de la mesa es: " << sd << "\nEl numero de jugadores actual es: " << nj << endl;
+
+
+  salida.open("44XX.txt");
+  salida << 1 << "," << "10" << "," << 50<< "\n";
+  salida << 2 << "," << "negro" << "," << 30<< "\n";
+  salida << 3 << "," << "impar" << "," << 40<< "\n";
+  salida << 4 << "," << "alto" << "," << 50<< "\n";
+  salida.close();
+
+  salida.open("55XX.txt");
+  salida << 2 << "," << "rojo" << "," << 50<< "\n";
+  salida << 1 << "," << "15" << "," << 60<< "\n";
+  salida << 4 << "," << "alto" << "," << 70<< "\n";
+  salida << 3 << "," << "impar" << "," << 80<< "\n";
+  salida.close();
+
+  salida.open("77XX.txt");
+  salida << 2 << "," << "rojo" << "," << 70<< "\n";
+  salida << 1 << "," << "20" << "," << 40<< "\n";
+  salida.close();
+
+  r.giraRuleta();
+
+  r.getPremios();
+
+  r.getEstadoRuleta(nj,sd,nl,eb);
+cout << "\n\nEl estado de la banca es: "<< eb << "\nEl numero de lanzamientos es: " << nl << "\nEl dinero que hay encima de la mesa es: " << sd << "\nEl numero de jugadores actual es: " << nj << endl;
+  r.giraRuleta();
+
+}

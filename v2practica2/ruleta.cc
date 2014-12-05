@@ -17,7 +17,7 @@ Setea los valores de bola a -1, carga banca a 1M e inicializa la semilla de no a
 */
 
 namespace ruleta{
-	Ruleta::Ruleta(Crupier &c):crupier_(c),bola_(-1),banca_(1000000){
+	Ruleta::Ruleta(Crupier &c):crupier_(c),bola_(-1),banca_(1000000),nlanzamientos_(0){
 		srand(time(NULL));
 	}
 	
@@ -171,6 +171,7 @@ namespace ruleta{
 	*/
 	void Ruleta::giraRuleta(){
 		bola_=rand()%37;
+		nlanzamientos_+=1;
 	}
 
 
@@ -297,5 +298,22 @@ namespace ruleta{
 			return "alto";
 		}
 	}
+
+	void Ruleta::getEstadoRuleta(int &nj, int &sd, int &nl, int &eb){
+		eb=banca_ - 1000000;
+		list<Jugador>:: iterator i;
+		nj=0;
+		sd=banca_;
+		nl=nlanzamientos_;
+		for(i=jugadores_.begin();i!=jugadores_.end();i++){
+			sd+=i->getDinero();
+			nj+=1;
+		}
+		
+	}
 }
+
+
+
+
 
