@@ -1,8 +1,8 @@
 #ifndef _CONTADOR_H
 #define _CONTADOR_H
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 
 
 using namespace std;
@@ -15,7 +15,8 @@ private:
 	int cambios_;
 	
 public:
-	Contador(int n):cambios_(0),numero_(n),v_(10){}
+	Contador(int n):cambios_(0),numero_(n),v_(10){
+	}
 	
 	int get(){return numero_;}
 
@@ -33,11 +34,11 @@ public:
 
 	//Sumas con int
 	friend int operator+(int num, const Contador &c);
-	friend int operator+(const Contador &c, int num);
+	int operator+(int num);
 
 	//Restas con int
 	friend int operator-(int num, const Contador &c);
-	friend int operator-(const Contador &c, int num);
+	int operator-(int num);
 
 	void imprimeVector();
 	bool undo(int v=1);

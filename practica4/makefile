@@ -1,2 +1,2 @@
 all:
-	gcc contador.cc contador.h contador-ppal.cc
+	g++ contador.cc contador.h contador-ppal.cc

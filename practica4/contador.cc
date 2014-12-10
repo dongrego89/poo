@@ -6,27 +6,23 @@ using namespace std;
 
 //Incrementos
 Contador Contador::operator++(void){
-	//numero_+=1;
-	*this=*this+1;
+	*this=*this+1;//numero_+=1;
 	return *this;
 }
 
 Contador Contador::operator++(int){
-	//numero_+=1;
-	*this=*this+1;
+	*this=*this+1;//numero_+=1;
 	return *this;
 }
 
 //Decrementos
 Contador Contador::operator--(void){
-	//numero_-=1;
-	*this=*this-1;
+	*this=*this-1;//numero_-=1;
 	return *this;
 }
 
 Contador Contador::operator--(int){
-	//numero_-=1;
-	*this=*this-1;
+	*this=*this-1;//numero_-=1;
 	return *this;
 }
 
@@ -50,19 +46,19 @@ Contador Contador::operator=(int num){
 //Métodos Friend
 
 int Contador::operator+(int num){
-	return num+this.numero_;
+	return num+this->numero_;
 }
 
-int Contador::operator+(const Contador &c, int num){
-	return num+c.numero_;//vigilar este
+int operator+(int num, const Contador &c){
+	return num + c.numero_;
 }
 
 int Contador::operator-(int num){
-	return num - numero_;//vigilar este
+	return this->numero_- num;
 }
 
-int Contador::operator-(const Contador &c, int num){
-	return c.numero_ - num;
+int operator-(int num, const Contador &c){
+	return num - c.numero_;
 }
 
 //Otros Métodos
@@ -74,20 +70,19 @@ void Contador::imprimeVector(){
 
 	for(i=0;i<10;i++){
 		cout << "[" << v_[i] << "]";
-	}	
-
-	cout << endl;
+	}
+	
+	cout << endl;	
 
 }
-/*
-bool Contador::undo(int v=1){
+
+bool Contador::undo(int v){
 	if((v>cambios_) || (v>10)){//10 es el limite de cambios en el vector
 		return false;
 	}
-	/*
-	Reasignar el valor correspondiente al contador
-	Restar a cambios el valor de v
-	
+	numero_=v_[(cambios_-v)%10];//Reasignar valor correspondiente
+	cambios_-=v;//Restablecer el valor de cambios con las operaciones de undo
+
 	return true;
-}*/
+}
 
