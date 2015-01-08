@@ -80,8 +80,11 @@ bool Contador::undo(int v){
 	if((v>cambios_) || (v>10)){//10 es el limite de cambios en el vector
 		return false;
 	}
+	else{
 	numero_=v_[(cambios_-v)%10];//Reasignar valor correspondiente
 	cambios_-=v;//Restablecer el valor de cambios con las operaciones de undo
+
+	}
 
 	return true;
 }

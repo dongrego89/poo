@@ -15,7 +15,7 @@ private:
 	int cambios_;
 	
 public:
-	Contador(int n):cambios_(0),numero_(n),v_(10){
+    Contador(int n=10):cambios_(0),numero_(n),v_(10){
 	}
 	
 	int get(){return numero_;}
@@ -42,10 +42,6 @@ public:
 
 	void imprimeVector();
 	bool undo(int v=1);
-
-/*
-cute gtk IGUs
-*/
 
 };
 

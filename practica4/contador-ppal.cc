@@ -47,8 +47,6 @@ int main(){
 	c.undo(3);
 	cout << "Deshacer 1 acciones" << endl;
 
-	c.imprimeVector();
-
 	cout << "Valor actual de C = " << c.get() << endl;
 	return 0;
 }
