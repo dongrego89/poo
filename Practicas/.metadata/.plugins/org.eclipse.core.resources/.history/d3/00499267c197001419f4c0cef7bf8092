@@ -1,0 +1,113 @@
+#include<iostream>
+#include<vector>
+
+#include "contador.h"
+using namespace std;
+
+/*Tanto en incrementos como decremento asignamos mediante el operador =
+ * En incrementamos decimos que el objeto = objeto + 1
+ * En decrementos decimos que el objeto = objeto - 1
+ */
+
+//Incrementos
+Contador Contador::operator++(void){
+	*this=*this+1;//numero_+=1;
+	return *this;
+}
+
+Contador Contador::operator++(int){
+	*this=*this+1;//numero_+=1;
+	return *this;
+}
+
+//Decrementos
+Contador Contador::operator--(void){
+	*this=*this-1;//numero_-=1;
+	return *this;
+}
+
+Contador Contador::operator--(int){
+	*this=*this-1;//numero_-=1;
+	return *this;
+}
+
+//Asignaciones
+/*En este método al hacer una asignación, contamos como que se ha hecho una modificación
+ * Por tanto, el valor previo a la modificación se guardará en el vector v_
+ * También se incrementará la variable cambios_ para conocer cuantos cambios ha habido en este objeto
+ *
+ * En combinación del vector y el numero de cambios podremos conocer a posteriori el valor del contador deshaciendo n cambios
+ *
+ * */
+Contador Contador::operator=(const Contador &c){
+	this->v_[this->cambios_%10]=numero_;
+	this->cambios_=this->cambios_+1;
+	
+	numero_=c.numero_;
+	return *this;
+}
+//También se implementa el operador = para cuando se le asigna un valor entero
+Contador Contador::operator=(int num){
+	this->v_[this->cambios_%10]=numero_;
+	this->cambios_=this->cambios_+1;
+
+	numero_=num;
+	return *this;
+}
+
+
+int Contador::operator+(int num){
+	return num+this->numero_;
+}
+
+int Contador::operator-(int num){
+	return this->numero_- num;
+}
+
+/*Métodos Friend
+ * Son métodos de la clase contador que desean sobreescribir operadores del tipo int
+ * Por este motivo se nombran en la clase contador, etiquetados como friend
+ * Fuera de la declaración de la clase se definen sin usar la etiqueta friend
+ */
+
+int operator+(int num, const Contador &c){
+	return num + c.numero_;
+}
+int operator-(int num, const Contador &c){
+	return num - c.numero_;
+}
+
+
+//Otros Métodos
+//Método que imprime un vector con formato [E1][E2]...
+void Contador::imprimeVector(){
+	int i;
+	
+	cout << endl << "Vector: ";
+
+	for(i=0;i<10;i++){
+		cout << "[" << v_[i] << "]";
+	}
+	
+	cout << endl;	
+
+}
+
+/*Método que deshace v asignaciones al objeto contador
+ * @param v: Por defecto vale 1, y se puede pasar un valor entero de acciones a deshacer
+ * @return true/false, si se pudo completar la operación
+ * */
+
+bool Contador::undo(int v=10){
+	if((v>cambios_) || (v>10)){//10 es el limite de cambios en el vector
+		return false;
+	}
+	else{
+	numero_=v_[(cambios_-v)%10];//Reasignar valor correspondiente
+	cambios_-=v;//Restablecer el valor de cambios con las operaciones de undo
+
+	}
+
+	return true;
+}
+

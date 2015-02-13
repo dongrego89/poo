@@ -1,0 +1,1 @@
+persona.d: ../persona.cc

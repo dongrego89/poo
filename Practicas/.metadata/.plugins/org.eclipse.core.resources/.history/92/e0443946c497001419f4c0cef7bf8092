@@ -1,0 +1,37 @@
+// dados_unittest.cc: Juan A. Romero
+// A sample program demonstrating using Google C++ testing framework.
+//
+// This sample shows how to write a more complex unit test for a class
+// that has multiple member functions.
+//
+// Usually, it's a good idea to have one test for each method in your
+// class.  You don't have to do that exactly, but it helps to keep
+// your tests organized.  You may also throw in additional tests as
+// needed.
+
+#include "contador.h"
+#include "gtest/gtest.h"
+
+#include<iostream>
+
+using namespace std;
+
+TEST(Contador, Declaracion) {
+  Contador c(2);
+
+  EXPECT_EQ(2,c.get());
+}
+
+TEST(Contador,Incremento){
+	Contador c(0);
+	c++;
+	++c;
+	EXPECT_EQ(2,c.get());
+}
+
+TEST(Contador,Decremento){
+	Contador c(0);
+	c--;
+	--c;
+	EXPECT_EQ(-2,c.get());
+}

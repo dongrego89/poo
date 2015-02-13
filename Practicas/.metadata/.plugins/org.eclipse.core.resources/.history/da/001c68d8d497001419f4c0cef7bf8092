@@ -1,0 +1,243 @@
+/*
+ * ruleta.cc
+ *
+ *  Created on: 9/1/2015
+ *      Author: grego
+ */
+#include "ruleta.h"
+#include "jugador.h"
+
+#include<list> //Contenedor lista
+#include<string> //Cadenas
+#include<fstream> //Ficheros
+#include<cstdlib> //Para el atoi y metodos rand
+#include<ctime> //Para el TIME
+
+using namespace std;
+
+Ruleta::Ruleta(Crupier c) :	bola_(-1), crupier_(c), banca_(1000000) {
+	srand(time(NULL));//Semilla generadora de aleatorios
+};
+
+bool Ruleta::addJugador(const Jugador &j){
+	list<Jugador> :: iterator i;
+	bool encontrado=false;;
+
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(i->getDNI() == j.getDNI()){
+				encontrado=true;//Si encontramos al jugador en la lista
+		}
+	}
+	if(encontrado==false){//Si no encontramos al jugador en la lista
+
+		jugadores_.push_back(j);//Se añade el jugador al final de la lista
+
+		string ruta=j.getDNI() + ".txt";
+
+		ifstream fichero(ruta.c_str());//Abre en modo entrada el fichero
+		if(!fichero.is_open()){//Si no se abre, no existe
+			ofstream fichero(ruta.c_str());	//Lo abriremos con intención de crear nuevo
+		}
+		fichero.close();//Exista o no, cerramos el fichero
+	}
+	return encontrado;
+}
+
+int Ruleta::deleteJugador(string dni){
+	list<Jugador>::iterator i;
+	int retorno=2;//Valor no encontrado por defecto
+
+	if(jugadores_.size()==0){
+		retorno=-1;//Lista vacía
+	}
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(i->getDNI() == dni){
+			jugadores_.erase(i);
+			retorno=1;
+		}
+	}
+	return retorno;
+}
+
+int Ruleta::deleteJugador(const Jugador &j){
+	return deleteJugador(j.getDNI());//Nos servimos de la funcion anterior para borrar por dni
+}
+
+void Ruleta::escribeJugadores(){
+	cout << "hola q tal";
+	ofstream fichero("jugadores.txt");
+
+	if(fichero.is_open()){
+		list<Jugador> :: iterator i;
+
+		for(i=jugadores_.begin();i!=jugadores_.end();i++){
+			fichero << i->getDNI() << ",";
+			fichero << i->getNombre() << ",";
+			fichero << i->getApellidos() << ",";
+			fichero << i->getDireccion() << ",";
+			fichero << i->getLocalidad() << ",";
+			fichero << i->getProvincia() << ",";
+			fichero << i->getPais() << ",";
+			fichero << i->getDinero() << "\n";
+		}
+
+		fichero.close();
+	}
+}
+
+void Ruleta::leeJugadores(){
+	ifstream fichero("jugadores.txt");
+
+	if(fichero.is_open()){
+		Jugador auxiliar("","");
+
+		jugadores_.clear();//Borramos la lista de jugadores
+
+		char dni[30],codigo[30],nombre[60],apellidos[100],direccion[200],localidad[60],provincia[60],pais[60],dinero[60];
+
+		while(fichero.getline(dni,300,',')){
+			fichero.getline(codigo,300,',');
+			fichero.getline(nombre,300,',');
+			fichero.getline(apellidos,300,',');
+			fichero.getline(direccion,300,',');
+			fichero.getline(localidad,300,',');
+			fichero.getline(provincia,300,',');
+			fichero.getline(pais,300,',');
+			fichero.getline(dinero,300,'\n');
+
+			auxiliar.setDNI(dni);
+			auxiliar.setNombre(nombre);
+			auxiliar.setApellidos(apellidos);
+			auxiliar.setDireccion(direccion);
+			auxiliar.setLocalidad(localidad);
+			auxiliar.setProvincia(provincia);
+			auxiliar.setPais(pais);
+			auxiliar.setDinero(atoi(dinero));//Dinero es un entero, necesitamos un atoi
+
+			jugadores_.push_back(auxiliar);
+		}
+
+
+		fichero.close();
+	}
+
+}
+
+void Ruleta::giraRuleta(){
+	this->bola_=rand()%37;
+}
+
+void Ruleta::getPremios(){
+	list<Jugador>::iterator j;
+	list<Apuesta>::iterator a;
+
+	list<Apuesta> apuestas;
+
+	for(j=jugadores_.begin();j!=jugadores_.end();j++){
+		apuestas=j->getApuestas();
+
+		for(a=apuestas.begin();a!=apuestas.end();a++){
+			switch(a->tipo){
+			case 1://Apuesta sencilla
+				if( atoi( a->valor.c_str() )== bola_){//Si gana el jugador
+					j->setDinero(j->getDinero()+a->cantidad * 35);
+					banca_-=a->cantidad * 35;
+				}
+				else{//Si pierde el jugador
+					j->setDinero(j->getDinero()-a->cantidad);
+					banca_+=a->cantidad;
+				}
+			break;
+			case 2://Apuesta rojo o negro
+				if(a->valor == apuestaColor()){//Si acierta con el color
+					j->setDinero(j->getDinero() + a->cantidad);
+					banca_-=a->cantidad;
+				}
+				else{//Si no acierta
+					j->setDinero(j->getDinero() - a->cantidad);
+					banca_+=a->cantidad;
+				}
+			break;
+			case 3://Apuesta par o impar
+				if(a->valor == apuestaParidad()){//Si acierta con la paridad
+					j->setDinero(j->getDinero() + a->cantidad);
+					banca_-=a->cantidad;
+				}
+				else{//Si no acierta
+					j->setDinero(j->getDinero() - a->cantidad);
+					banca_+=a->cantidad;
+				}
+			break;
+			case 4://Apuesta alto o bajo
+				if(a->valor == apuestaAltura()){//Si acierta con la altura
+					j->setDinero(j->getDinero() + a->cantidad);
+					banca_-=a->cantidad;
+				}
+				else{//Si no acierta
+					j->setDinero(j->getDinero() - a->cantidad);
+					banca_+=a->cantidad;
+				}
+			break;
+
+			}
+
+		}
+
+	}
+
+}
+
+
+string Ruleta::apuestaColor(){
+	if(bola_==0){
+		return "cero";
+	}
+	switch(bola_){
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 9:
+		case 12:
+		case 14:
+		case 16:
+		case 18:
+		case 19:
+		case 21:
+		case 23:
+		case 25:
+		case 27:
+		case 30:
+		case 32:
+		case 34:
+		case 36:
+			return "rojo";
+			break;
+		default:
+			return "negro";
+	}
+}
+
+string Ruleta::apuestaAltura(){
+	if(bola_==0){
+		return "cero";
+	}
+	else if(bola_>0 && bola_<19){
+		return "bajo";
+	}
+	else{
+		return "alto";
+	}
+
+}
+string Ruleta::apuestaParidad(){
+	if(bola_==0){
+			return "cero";
+		}
+		else if(bola_%2==0){
+			return "par";
+		}
+		else{
+			return "impar";
+		}
+}

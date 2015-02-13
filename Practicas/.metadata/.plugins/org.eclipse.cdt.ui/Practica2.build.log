@@ -1,0 +1,12 @@
+22:01:30 **** Incremental Build of configuration Debug for project Practica2 ****
+make all 
+Building target: Practica2
+Invoking: Cross G++ Linker
+g++  -o "Practica2"  ./crupier.o ./jugador.o ./persona.o   
+/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o: En la función `_start':
+(.text+0x20): referencia a `main' sin definir
+collect2: error: ld returned 1 exit status
+make: *** [Practica2] Error 1
+
+22:01:30 Build Finished (took 168ms)
+

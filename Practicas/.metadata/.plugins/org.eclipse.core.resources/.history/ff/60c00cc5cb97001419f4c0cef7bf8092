@@ -1,0 +1,41 @@
+/*
+ * ruleta.cc
+ *
+ *  Created on: 9/1/2015
+ *      Author: grego
+ */
+#include "ruleta.h"
+#include "jugador.h"
+
+#include<list>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+bool Ruleta::addJugador(const Jugador &j){
+	list<Jugador> :: iterator i;
+	bool encontrado=false;;
+
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(*i == j){
+				encontrado=true;
+		}
+	}
+	if(encontrado==false){
+
+		jugadores_.push_back(j);//Se añade el jugador al final de la lista
+
+		string ruta=j.getDNI() + ".txt";
+
+		ifstream fichero(ruta.c_str());//Abre en modo entrada el fichero
+		if(!fichero.is_open()){//Si no se abre, no existe
+			ofstream fichero(ruta.c_str());	//Lo abriremos con intención de crear nuevo
+		}
+		fichero.close();//Exista o no, cerramos el fichero
+	}
+	return encontrado;
+}
+
+
+

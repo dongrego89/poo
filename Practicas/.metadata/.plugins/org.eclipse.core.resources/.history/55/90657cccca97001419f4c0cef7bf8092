@@ -1,0 +1,27 @@
+/*
+ * ruleta.cc
+ *
+ *  Created on: 9/1/2015
+ *      Author: grego
+ */
+#include "ruleta.h"
+#include "jugador.h"
+
+#include<list>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+bool Ruleta::addJugador(const Jugador &j){
+	list<Jugador> :: iterator i;
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(*i == j){
+
+		}
+	}
+
+}
+
+
+

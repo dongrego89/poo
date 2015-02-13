@@ -1,0 +1,74 @@
+/*
+ * ruleta.h
+ *
+ *  Created on: 9/1/2015
+ *      Author: grego
+ */
+
+#ifndef RULETA_H_
+#define RULETA_H_
+
+#include "crupier.h"
+#include "jugador.h"
+#include<list>
+
+using namespace std;
+
+class Ruleta{
+private:
+	int banca_;
+	int bola_;
+	list<Jugador>jugadores_;
+	Crupier crupier_;
+
+public:
+	Ruleta(Crupier c) :
+			bola_(-1), crupier_(c), banca_(1000000) {
+	}
+
+	inline int getBanca() const {
+		return banca_;
+	}
+
+	inline bool setBanca(int banca) {
+		if(banca>0){
+			banca_ = banca;
+			return true;
+		}
+		return false;
+	}
+
+	inline int getBola() const {
+		return bola_;
+	}
+
+	inline bool setBola(int bola) {
+		if(bola>=0 && bola=<36){
+			bola_ = bola;
+			return true;
+		}
+		return false;
+	}
+
+	Crupier getCrupier() const {
+		return crupier_;
+	}
+
+	void setCrupier(const Crupier &c) {
+		crupier_ = c;
+	}
+	
+	list<Jugador> getJugadores()const{
+		return jugadores_;
+	}
+	bool addJugador(const Jugador &j);
+
+	int deleteJugador(string dni);
+	int deleteJugador(const Jugador &j);
+
+	void escribeJugadores();
+	void leeJugadores();
+
+
+};
+#endif /* RULETA_H_ */

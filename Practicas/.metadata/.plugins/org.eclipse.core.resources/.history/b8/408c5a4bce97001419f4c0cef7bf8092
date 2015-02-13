@@ -1,0 +1,96 @@
+/*
+ * ruleta.cc
+ *
+ *  Created on: 9/1/2015
+ *      Author: grego
+ */
+#include "ruleta.h"
+#include "jugador.h"
+
+#include<list>
+#include<string>
+#include<fstream>
+
+using namespace std;
+
+bool Ruleta::addJugador(const Jugador &j){
+	list<Jugador> :: iterator i;
+	bool encontrado=false;;
+
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(*i == j){
+				encontrado=true;//Si encontramos al jugador en la lista
+		}
+	}
+	if(encontrado==false){//Si no encontramos al jugador en la lista
+
+		jugadores_.push_back(j);//Se añade el jugador al final de la lista
+
+		string ruta=j.getDNI() + ".txt";
+
+		ifstream fichero(ruta.c_str());//Abre en modo entrada el fichero
+		if(!fichero.is_open()){//Si no se abre, no existe
+			ofstream fichero(ruta.c_str());	//Lo abriremos con intención de crear nuevo
+		}
+		fichero.close();//Exista o no, cerramos el fichero
+	}
+	return encontrado;
+}
+
+int Ruleta::deleteJugador(string dni){
+	list<Jugador>::iterator i;
+	int retorno=2;//Valor no encontrado por defecto
+
+	if(jugadores_.size()==0){
+		retorno=-1;//Lista vacía
+	}
+	for(i=jugadores_.begin();i!=jugadores_.end();i++){
+		if(i->getDNI() == dni){
+			jugadores_.erase(i);
+			retorno=1;
+		}
+	}
+	return retorno;
+}
+
+int Ruleta::deleteJugador(const Jugador &j){
+	return deleteJugador(j.getDNI());//Nos servimos de la funcion anterior para borrar por dni
+}
+
+void Ruleta::escribeJugadores(){
+	ofstream fichero("jugadores.txt");
+
+	if(fichero.is_open()){
+		list<Jugador> :: iterator i;
+
+		for(i=jugadores_.begin();i!=jugadores_.end();i++){
+			fichero << i->getDNI() << ",";
+			fichero << i->getNombre() << ",";
+			fichero << i->getApellidos() << ",";
+			fichero << i->getDireccion() << ",";
+			fichero << i->getLocalidad() << ",";
+			fichero << i->getProvincia() << ",";
+			fichero << i->getPais() << ",";
+			fichero << i->getDinero() << "\n";
+		}
+
+		fichero.close();
+	}
+}
+
+void Ruleta::leeJugadores(){
+	ifstream fichero("jugadores.txt");
+	if(fichero.is_open()){
+		jugadores_.clear();//Borramos la lista de jugadores
+		char dni[30],codigo[30],nombre[60],apellidos[100],direccion[200],localidad[60],provincia[60],pais[60],dinero[60];
+
+		while(getline(dni,300,fichero)){
+
+		}
+
+
+		fichero.close();
+	}
+
+}
+
