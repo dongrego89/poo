@@ -1,1 +1,0 @@
-g++ arch1.cc arch2.cc arch3.cc programa.cc -o programa
